@@ -411,10 +411,8 @@ class HTTPClient:
             resp = await self.get(api_route("IEconService/GetTradeOffers"), params=params)
             page = resp["response"]
             for key, value in page.items():
-                value_in_first_page = first_page[key]
-                if isinstance(value_in_first_page, list):
-                    assert isinstance(value, list)
-                    value_in_first_page += value
+                if isinstance(value, list):
+                    first_page.setdefault(key, []).extend(value)
 
             current_cursor = next_cursor
             try:
